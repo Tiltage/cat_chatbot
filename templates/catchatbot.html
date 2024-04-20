@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}Cat Chatbot{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-2">
+    </div>
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">Chatty Cat</div>
+            <div class="card-body">
+            <div class="form-outline w-100">
+                <!-- <img src="{{ image_url }}" alt="Image"> -->
+                <textarea class="form-control" rows="20">
+{% for message in messages %}
+{{ message.sender }}: {{ message.content }}
+{% endfor %}
+                </textarea>
+            <div class="card-footer">
+                <form action="#", method="post">
+                    <div class="input-group">
+                        <input type="text" class="form-control" name="prompt" placeholder="Type your message here...">
+                        <div class="input-group-append">
+                            <input type="Submit" value="Submit"/>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-2">
+        <img src="{{ image_url if not None}}" class="img-fluid" alt="Responsive image">
+        <div class="row justify-content-center">
+            <form name='generate_new_image' method='POST'>
+                <input type="submit" value="I want a new cat" class="btn btn-outline-success my-2 my-sm-0" /> 
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
