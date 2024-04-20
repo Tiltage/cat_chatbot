@@ -12,7 +12,7 @@ from user import User
 app = Flask(__name__)
 
 app.secret_key = 'hello'
-app.permanent_session_lifetime = timedelta(minutes=5) #Session persists for defined duration
+app.permanent_session_lifetime = timedelta(days=1) #Session persists for defined duration
 
 @app.route('/') #Default domain
 def home():
@@ -77,7 +77,6 @@ def catchatbot():
             'content': 'Meowllo! Ask me anything!'
         },
     ]
-    print(session)
 
     if not 'full_history' in session: #First time entering the page
         session['full_history'] = start_message
@@ -102,7 +101,6 @@ def catchatbot():
             image_url = session['image_url']
         else:
             image_url = None
-        print(message_history)
     
     else:
         message_history = session['full_history']
@@ -124,9 +122,17 @@ def viewcat():
         session['image_url'] = bot.generate_image(f'{user_prompt}')
 
     image_url = session['image_url']
-    print(image_url)
 
     return render_template('viewcat.html', image_url=image_url)
+
+@app.route('/submit', methods=['GET'])
+def realcat():
+    print('redirected')
+    selected_option = request.args.get('option')
+    print(selected_option)
+    breed = request.form.get('breed')
+    print(breed)
+    return redirect(url_for('viewcat'))
 
 if __name__ == '__main__':
     app.run(debug=True)
