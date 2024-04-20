@@ -48,7 +48,7 @@ def login():
         session['email'] = email
         if email:
             flash('Logged in successfully!', category='success')
-            return redirect(url_for('user', email=email))
+            return redirect(url_for('catchatbot'))
         else:
             flash('Incorrect password, try again.', category='error')
     else:
@@ -73,19 +73,24 @@ def catchatbot():
     
     start_message = [
         {
-            'sender': 'ChattyCat',
+            'sender': 'Chatty Cat',
             'content': 'Meowllo! Ask me anything!'
         },
     ]
     print(session)
 
     if not 'full_history' in session: #First time entering the page
-        print('Initialising message history')
         session['full_history'] = start_message
+    
+    if not 'image_url' in session:
         session['image_url'] = bot.generate_image()
-        print(session['image_url'])
+
     
     if request.method == 'POST':
+        if request.form.get('generate_new_cat'):
+            print('Redirecting')
+            return redirect(url_for('viewcat'))
+        
         message_history = session['full_history']
         prompt = request.form.get('prompt')
         # request.form={} #Clear request form to prevent resubmission on page refresh
@@ -98,9 +103,30 @@ def catchatbot():
         else:
             image_url = None
         print(message_history)
-
     
+    else:
+        message_history = session['full_history']
+        image_url = session['image_url']
+
     return render_template('catchatbot.html', messages=message_history, image_url=image_url)
+
+@app.route('/viewcat', methods=['GET', 'POST'])
+def viewcat():
+    # if not 'email' in session:
+    #     flash('You have not logged in!')
+    #     return redirect(url_for('login'))
+    user_prompt = request.form.get('catpictureprompt')
+
+    if user_prompt is None:
+        if not 'image_url' in session:
+            session['image_url'] = bot.generate_image()
+    else:
+        session['image_url'] = bot.generate_image(f'{user_prompt}')
+
+    image_url = session['image_url']
+    print(image_url)
+
+    return render_template('viewcat.html', image_url=image_url)
 
 if __name__ == '__main__':
     app.run(debug=True)

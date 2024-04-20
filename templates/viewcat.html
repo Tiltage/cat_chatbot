@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{%block title %}View Cats{% endblock %}
+
+{%block content %}
+<div class="row">
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">Cute Cats</div>
+            <div class="card-body">
+            <div class="form-outline w-20">
+            <div class="card-footer">
+                <form action="#", method="post">
+                    <div class="input-group">
+                        <input type="text" class="form-control" name="catpictureprompt" placeholder="Describe what kind of cat you want!">
+                        <div class="input-group-append">
+                            <input type="Submit" value="Submit"/>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8">
+        <div class="card-header">Generated cats</div>
+        <div class="card-body">
+            <img src="{{ image_url if not None}}" class="img-fluid" alt="Responsive image">
+        </div>
+    </div>
+</div>
+{% endblock %}
