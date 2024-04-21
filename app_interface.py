@@ -76,21 +76,17 @@ def catchatbot():
         },
     ]
 
-    if not 'full_history' in session: #First time entering the page
+    if 'full_history' not in session: #First time entering the page
         session['full_history'] = start_message
     
     if request.method == 'POST':
         if request.form.get('generate_new_cat'):
             return redirect(url_for('viewcat'))
         
-        json_obj = cat.get_json_obj('Random', '1', [''], '1')
-        session['json_obj'] = json_obj
-        session['real_cat'] = json_obj[0]['url']
-        
         message_history = session['full_history']
         prompt = request.form.get('prompt')
 
-        message_history = bot.reply(prompt, message_history) #Instantiate image_url and keep it constant throughout a user's use.
+        message_history = bot.reply(prompt, message_history)
         session['full_history'] = message_history
         
         if 'image_url' in session:
@@ -98,21 +94,25 @@ def catchatbot():
         else:
             image_url = None
         
-        if 'real_cat' in session:
-            real_cat = session['real_cat']
-        else:
-            real_cat = None
-    
-    else:
+        real_cat = session['real_cat']
 
-        json_obj = cat.get_json_obj('Random', '1', [''], '1')
+    else:
+        if 'json_obj' in session:
+            json_obj = session['json_obj']
+        else:
+            json_obj = cat.get_json_obj('Random', '1', [''], '1')
+
         session['json_obj'] = json_obj
         session['real_cat'] = json_obj[0]['url']
     
         message_history = session['full_history']
-        image_url = session['image_url']
         real_cat = session['real_cat']
-
+        
+        if 'image_url' in session:
+            image_url = session['image_url']
+        else:
+            image_url = None
+        
     return render_template('catchatbot.html', messages=message_history, image_url=image_url, real_cat=real_cat)
 
 @app.route('/viewcat', methods=['GET', 'POST'])
@@ -124,27 +124,24 @@ def viewcat():
 
     if 'image_url' not in session:
         if user_prompt is None:
-            session['image_url'] = bot.generate_image()
-        else:
-            session['image_url'] = bot.generate_image(f'{user_prompt}')
-    else:
-        if user_prompt is None:
-            pass
+            session['image_url'] = None
         else:
             session['image_url'] = bot.generate_image(f'{user_prompt}')
 
     image_url = session['image_url']
 
     json_list = []
-    print('previos:', session['json_obj'])
     if 'json_obj' in session:
-        for obj in session['json_obj']:
-            json_list.append(obj)
+        json_obj = session['json_obj']
     else:
-        json_list=None
-    print('current json list: ', json_list)
+        json_obj = cat.get_json_obj('Random', '1', [''], '1')
 
-    return render_template('viewcat.html', json_obj=json_list, image_url=image_url)
+    session['json_obj'] = json_obj
+    for obj in session['json_obj']:
+        json_list.append(obj)
+        radar_list = radar.generate_radar_charts(json_list)
+
+    return render_template('viewcat.html', json_list=json_list, image_url=image_url, radar_list=radar_list)
 
 @app.route('/submit', methods=['POST'])
 def submit():
@@ -155,6 +152,8 @@ def submit():
     if number_images is None:
         number_images = 1
     json_obj = cat.get_json_obj(order, breedinfo, breeds, number_images)
+
+    session['json_obj'] = json_obj
     json_list = []
     for obj in json_obj:
         json_list.append(obj)
@@ -171,6 +170,7 @@ def submit():
         print(json.dumps(obj, indent=4))
 
     return render_template('viewcat.html', json_list=json_list, image_url=image_url, radar_list=radar_list)
+
 
 if __name__ == '__main__':
     app.run(debug=True)
