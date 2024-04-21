@@ -80,8 +80,13 @@ def catchatbot():
         session['full_history'] = start_message
     
     if request.method == 'POST':
-        if request.form.get('generate_new_cat'):
-            return redirect(url_for('viewcat'))
+        user_prompt = request.form.get('generate_new_cat')
+        if user_prompt:
+            image_url = bot.generate_image(f'{user_prompt}')
+            session['image_url'] = image_url
+            message_history = session['full_history']
+            real_cat = session['real_cat']
+            return render_template('catchatbot.html', messages=message_history, image_url=image_url, real_cat=real_cat)
         
         message_history = session['full_history']
         prompt = request.form.get('prompt')
@@ -122,11 +127,13 @@ def viewcat():
     #     return redirect(url_for('login'))
     user_prompt = request.form.get('catpictureprompt')
 
-    if 'image_url' not in session:
-        if user_prompt is None:
+    if 'image_url' not in session: #No pre-exisiting AI image
+        if user_prompt is None: #No user prompt
             session['image_url'] = None
-        else:
+        else: #With user prompt
             session['image_url'] = bot.generate_image(f'{user_prompt}')
+    elif user_prompt is not None: #Existing AI image but user wants to regenerate
+        session['image_url'] = bot.generate_image(f'{user_prompt}')
 
     image_url = session['image_url']
 
