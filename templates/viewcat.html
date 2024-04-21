@@ -66,28 +66,14 @@
                     <div class="card-body">
                         <p>Name: {{ json_list[i].breeds[0].name}}</p>
                         <div class="card-footer">
-                            <p>Adaptability: {{ json_list[i].breeds[0].adaptability}}</p>
-                            <p>Affection_level: {{ json_list[i].breeds[0].affection_level}}</p>
-                            <p>Child_friendly: {{ json_list[i].breeds[0].child_friendly}}</p>
-                            <p>Dog_friendly: {{ json_list[i].breeds[0].dog_friendly}}</p>
-                            <p>Energy_level: {{ json_list[i].breeds[0].energy_level}}</p>
-                            <p>Grooming: {{ json_list[i].breeds[0].grooming}}</p>
-                            <p>Health_issues: {{ json_list[i].breeds[0].health_issues}}</p>
-                            <p>Intelligence: {{ json_list[i].breeds[0].intelligence}}</p>
-                            <p>Shedding_level: {{ json_list[i].breeds[0].shedding_level}}</p>
-                            <p>Social_needs: {{ json_list[i].breeds[0].social_needs}}</p>
-                            <p>Stranger_friendly: {{ json_list[i].breeds[0].stranger_friendly}}</p>
-                            <p>Vocalisation: {{ json_list[i].breeds[0].vocalisation}}</p>
-                            <p>Experimental: {{ json_list[i].breeds[0].experimental}}</p>
-                            <p>Hairless: {{ json_list[i].breeds[0].hairless}}</p>
-                            <p>Natural: {{ json_list[i].breeds[0].natural}}</p>
-                            <p>Rare: {{ json_list[i].breeds[0].rare}}</p>
-                            <p>Rex: {{ json_list[i].breeds[0].rex}}</p>
-                            <p>Suppressed_tail: {{ json_list[i].breeds[0].suppressed_tail}}</p>
-                            <p>Short_legs: {{ json_list[i].breeds[0].short_legs}}</p>
-                            <img src="data:image/jpeg;base64,{{ radar_list[i] | safe }}">
-                            <!-- <img src="{{ radar_list[i] }}" alt="Responsive" style="centered;"/> -->
-                            <img src="{{ json_list[i].url }}" alt="Responsive" style="max-width: 100%;"/>
+                            <div class="row">
+                                <div class="col">
+                                    <img src="{{ json_list[i].url }}" alt="Responsive" style="max-width: 100%;"/>   
+                                </div>
+                                <div class="col">
+                                    <img src="data:image/jpeg;base64,{{ radar_list[i] | safe }}" style="max-width: 100%;">
+                                </div>
+                            </div>
                             <p>Description: {{ json_list[i].breeds[0].description }}</p>
                         </div>
                     </div>
