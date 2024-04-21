@@ -1,3 +1,4 @@
+_pycache_/*
 config.py
 sql_helper.py
 .env
