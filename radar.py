@@ -47,6 +47,7 @@ def filter_json_obj(json_obj):
     for key, value in info.items():
         if key in keys_to_filter:
             filtered_obj[key] = value
+    # print(filtered_obj)
     return filtered_obj
 
 #Function to generate spiderweb diagram

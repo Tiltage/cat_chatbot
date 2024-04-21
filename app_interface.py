@@ -149,7 +149,8 @@ def viewcat():
     session['json_obj'] = json_obj
     for obj in session['json_obj']:
         json_list.append(obj)
-        radar_list = radar.generate_radar_charts(json_list)
+
+    radar_list=radar.generate_radar_charts(json_list)
 
     return render_template('viewcat.html', json_list=json_list, image_url=image_url, radar_list=radar_list)
 
@@ -165,16 +166,20 @@ def submit():
 
     session['json_obj'] = json_obj
     json_list = []
+    radar_list = []
     for obj in json_obj:
         json_list.append(obj)
+        # print(obj)
+
+    # print('json_list', json_list)
+    radar_list=radar.generate_radar_charts(json_list)
+
     session['real_cat'] = json_list
 
     if 'image_url' in session:
         image_url = session['image_url']
     else:
         image_url = None
-
-    radar_list = radar.generate_radar_charts(json_list)
 
     return render_template('viewcat.html', json_list=json_list, image_url=image_url, radar_list=radar_list)
 
