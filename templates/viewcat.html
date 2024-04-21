@@ -64,7 +64,7 @@
             {% if json_list %}
                 {% for i in range(json_list|length) %}
                     <div class="card-body">
-                        <p>Name: {{ json_list[i].breeds[0].name}}</p>
+                        <p>Breed: {{ json_list[i].breeds[0].name}}</p>
                         <div class="card-footer">
                             <div class="row">
                                 <div class="col">
@@ -75,6 +75,14 @@
                                 </div>
                             </div>
                             <p>Description: {{ json_list[i].breeds[0].description }}</p>
+                            <p>Breed id: {{ json_list[i].breeds[0].id }}</p>
+                            <p>Temperament: {{ json_list[i].breeds[0].temperament }}</p>
+                            <p>Weight: {{ json_list[i].breeds[0].weight.metric }} KG</p>
+                            <p>Origin Country: {{ json_list[i].breeds[0].origin }}, {{ json_list[i].breeds[0].country_code }}</p>
+                            <p>Lifespan: {{ json_list[i].breeds[0].life_span }}</p>
+                            <p>Click here to learn more: 
+                            <a href="{{ json_list[i].breeds[0].wikipedia_url }}" target="_blank">{{ json_list[i].breeds[0].wikipedia_url }}</a>
+                            </p>
                         </div>
                     </div>
                 {% endfor %}
