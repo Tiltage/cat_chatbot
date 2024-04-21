@@ -38,13 +38,9 @@ def reply(prompt, message_history):
 
   #Generate a chat response using the OpenAI API
   reply_text = generate_text(prompt)
-  # 
-  reply_image_url = None
-  # print(reply_text)
 
   #Append the generated response to the message history
   message_history.append({"sender": "Chatty Cat", "content": f"{reply_text}"})
-  # message_history.append({"sender": "Chatty Cat", "image": f"{reply_image_url}"})
 
   #Return the generated response and the updated message history
   return message_history

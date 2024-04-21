@@ -37,8 +37,6 @@ def generate_radar_charts(json_list):
     images = []
     for obj in json_list:
         filtered = filter_json_obj(obj)
-        
-        print(list(filtered.keys()))
         images.append(generate_spiderweb(list(filtered.keys()), list(filtered.values())))
 
     return images
@@ -46,17 +44,13 @@ def generate_radar_charts(json_list):
 def filter_json_obj(json_obj):
     filtered_obj = {}
     info = json_obj['breeds'][0]
-    print('key_filter', keys_to_filter)
     for key, value in info.items():
         if key in keys_to_filter:
             filtered_obj[key] = value
-    print(f'filtered: {filtered_obj}')
     return filtered_obj
 
 #Function to generate spiderweb diagram
 def generate_spiderweb(categories, values):
-    print(categories)
-    print(values)
     #Create figure and axis
     fig, ax = plt.subplots(figsize=(8, 8), subplot_kw=dict(polar=True))
 
