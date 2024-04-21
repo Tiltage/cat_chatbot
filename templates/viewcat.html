@@ -4,7 +4,7 @@
 
 {%block content %}
 <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-12">
         <div class="card">
             <div class="card-header">Generate an AI cat!</div>
             <div class="card-body">
@@ -26,38 +26,45 @@
         <div class="card-body">
             <img src="{{ image_url if not None}}" class="img-fluid" alt="Responsive image">
         </div>
-    </div>
-    <div class="col-md-6">
         <div class="card">
             <div class="card-header">Generate a real cat!</div>
             <div class="card-body">
-                <form action="/submit" method="get" name="option">
-                    <div class="form-group">
-                      <label for="exampleFormControlSelect1">Order of Upload Date</label>
-                      <select class="form-control" id="exampleFormControlSelect1">
-                        <option value="1">Random</option>
-                        <option value="2">Ascending</option>
-                        <option value="3">Descending</option>
-                      </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="exampleFormControlSelect1">Only Return Images with Breed Information</label>
-                        <select class="form-control" id="exampleFormControlSelect1">
-                          <option value="1">True</option>
-                          <option value="2">False</option>
+                <form action="/submit" method="POST" name="option">
+                    <div class="form-group" name="group1">
+                        <label for="group1">Order of Upload Date</label>
+                        <select class="form-control" id="order" name="order">
+                        <option value="Random" selected>Random</option>
+                        <option value="Ascending">Ascending</option>
+                        <option value="Descending">Descending</option>
                         </select>
                     </div>
-                    <label for="exampleFormControlSelect1">Describe what breed you are looking for! (E.g Aegean, Bengal)</label>
+                    <div class="form-group" name="group2">
+                        <label for="group2">Only Return Images with Breed Information</label>
+                        <select class="form-control" id="breedinfo" name="breedinfo">
+                            <option value="1" selected>True</option>
+                            <option value="0">False</option>
+                        </select>
+                    </div>
+                    <div class="form-group" name="group3">
+                        <label for="group3">Number of images</label>
+                        <select class="form-select dropdown-menu-end" id="order" name="number">
+                            {% for number in range(1, 101) %}
+                            <option value="{{ number }}">{{ number }}</option>
+                            {% endfor %}
+                        </select>
+                        </div>
+                    <label for="breed">Describe what breed you are looking for! (E.g Aegean, Bengal)</label>
                     <input type="text" class="form-control" name="breed" placeholder="Separate values with commas">
                     <input type="Submit" value="Submit"/>
-                  </form>
+                    </form>
             </div>
         </div>
         <div class="card-header">Real Cat</div>
         <div class="card-body">
-            {% if imgs %}
-                {% for img_path in imgs %}
-                    <img src="{{ real_cat_image_url if not None }}" alt="Responsive"/>
+            {% if json_obj %}
+                {% for obj in json_obj %}
+                    <img src="{{ obj.url }}" alt="Responsive style=" style="max-width: 100%;"/>
+                    <p>{{ obj.breeds[0].description }}</p>
                 {% endfor %}
             {% endif %}
         </div>

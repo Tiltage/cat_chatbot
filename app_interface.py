@@ -1,13 +1,10 @@
 from flask import Flask, redirect, url_for, render_template, request, session, flash
-from flask_login import login_user, login_required, logout_user, current_user
+from flask_login import current_user
 from datetime import timedelta
-import asyncio
-
-from flask_sqlalchemy import SQLAlchemy
-from werkzeug.security import generate_password_hash, check_password_hash
+import json
 
 import prompt as bot
-from user import User
+import catapi as cat
 
 app = Flask(__name__)
 
@@ -67,9 +64,9 @@ def logout():
 
 @app.route('/catchatbot', methods=['GET', 'POST'])
 def catchatbot():
-    if not 'email' in session:
-        flash('You have not logged in!')
-        return redirect(url_for('login'))
+    # if not 'email' in session:
+    #     flash('You have not logged in!')
+    #     return redirect(url_for('login'))
     
     start_message = [
         {
@@ -125,14 +122,21 @@ def viewcat():
 
     return render_template('viewcat.html', image_url=image_url)
 
-@app.route('/submit', methods=['GET'])
-def realcat():
-    print('redirected')
-    selected_option = request.args.get('option')
-    print(selected_option)
-    breed = request.form.get('breed')
-    print(breed)
-    return redirect(url_for('viewcat'))
+@app.route('/submit', methods=['POST'])
+def submit():
+    order = request.form.get('order')
+    breedinfo = request.form.get('breedinfo')
+    breeds = request.form.get('breed').split(',')
+    number_images = request.form.get('number')
+    if number_images is None:
+        number_images = 1
+    json_obj = cat.get_json_obj(order, breedinfo, breeds, number_images)
+    json_list = []
+    for obj in json_obj:
+        json_list.append(obj)
+    print(json_list)
+    
+    return render_template('viewcat.html', json_obj=json_list)
 
 if __name__ == '__main__':
     app.run(debug=True)
