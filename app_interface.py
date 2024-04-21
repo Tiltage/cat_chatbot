@@ -5,6 +5,7 @@ import json
 
 import prompt as bot
 import catapi as cat
+import radar
 
 app = Flask(__name__)
 
@@ -163,9 +164,13 @@ def submit():
         image_url = session['image_url']
     else:
         image_url = None
+
+    radar_list = radar.generate_radar_charts(json_list)
+
     for obj in json_list:
         print(json.dumps(obj, indent=4))
-    return render_template('viewcat.html', json_obj=json_list, image_url=image_url)
+
+    return render_template('viewcat.html', json_list=json_list, image_url=image_url, radar_list=radar_list)
 
 if __name__ == '__main__':
     app.run(debug=True)
