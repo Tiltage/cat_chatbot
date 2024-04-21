@@ -81,13 +81,16 @@ def catchatbot():
     
     if request.method == 'POST':
         user_prompt = request.form.get('generate_new_cat')
+        learn_more = request.form.get('learn_more')
         if user_prompt:
             image_url = bot.generate_image(f'{user_prompt}')
             session['image_url'] = image_url
             message_history = session['full_history']
             real_cat = session['real_cat']
             return render_template('catchatbot.html', messages=message_history, image_url=image_url, real_cat=real_cat)
-        
+        elif learn_more:
+            return redirect(url_for('viewcat'))
+
         message_history = session['full_history']
         prompt = request.form.get('prompt')
 
