@@ -63,8 +63,32 @@
         <div class="card-body">
             {% if json_obj %}
                 {% for obj in json_obj %}
-                    <img src="{{ obj.url }}" alt="Responsive style=" style="max-width: 100%;"/>
-                    <p>{{ obj.breeds[0].description }}</p>
+                    <div class="card-body">
+                        <p>Name: {{ obj.breeds[0].name}}</p>
+                        <div class="card-footer">
+                            <p>Adaptability: {{ obj.breeds[0].adaptability}}</p>
+                            <p>Affection_level: {{ obj.breeds[0].affection_level}}</p>
+                            <p>Child_friendly: {{ obj.breeds[0].child_friendly}}</p>
+                            <p>Dog_friendly: {{ obj.breeds[0].dog_friendly}}</p>
+                            <p>Energy_level: {{ obj.breeds[0].energy_level}}</p>
+                            <p>Grooming: {{ obj.breeds[0].grooming}}</p>
+                            <p>Health_issues: {{ obj.breeds[0].health_issues}}</p>
+                            <p>Intelligence: {{ obj.breeds[0].intelligence}}</p>
+                            <p>Shedding_level: {{ obj.breeds[0].shedding_level}}</p>
+                            <p>Social_needs: {{ obj.breeds[0].social_needs}}</p>
+                            <p>Stranger_friendly: {{ obj.breeds[0].stranger_friendly}}</p>
+                            <p>Vocalisation: {{ obj.breeds[0].vocalisation}}</p>
+                            <p>Experimental: {{ obj.breeds[0].experimental}}</p>
+                            <p>Hairless: {{ obj.breeds[0].hairless}}</p>
+                            <p>Natural: {{ obj.breeds[0].natural}}</p>
+                            <p>Rare: {{ obj.breeds[0].rare}}</p>
+                            <p>Rex: {{ obj.breeds[0].rex}}</p>
+                            <p>Suppressed_tail: {{ obj.breeds[0].suppressed_tail}}</p>
+                            <p>Short_legs: {{ obj.breeds[0].short_legs}}</p>
+                            <img src="{{ obj.url }}" alt="Responsive style=" style="max-width: 100%;"/>
+                            <p>Description: {{ obj.breeds[0].description }}</p>
+                        </div>
+                    </div>
                 {% endfor %}
             {% endif %}
         </div>
