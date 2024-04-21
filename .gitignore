@@ -1,5 +1,4 @@
 config.py
 sql_helper.py
-user.py
 .env
 test.py
